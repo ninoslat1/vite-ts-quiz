@@ -19,7 +19,6 @@ if(questNum == null || questNum == '' || containsNumbers(questNum) === false){
   reloadPage();
 }
 
-
 const min_score = Math.floor((TOTAL_QUESTION/2)+(TOTAL_QUESTION/4))
 
 export type AnswerObj = {
@@ -147,7 +146,8 @@ const App = () => {
           </>
         ) : null }
         <>
-          {<ToastContainer
+          {userAnswer.length === TOTAL_QUESTION && score <= min_score ?
+            <ToastContainer
             position="bottom-center"
             autoClose={1500}
             hideProgressBar={false}
@@ -158,7 +158,20 @@ const App = () => {
             draggable
             pauseOnHover={false}
             theme="colored"
-          />}
+          /> : null}
+          {userAnswer.length === TOTAL_QUESTION && score >= min_score ?
+            <ToastContainer
+            position="bottom-center"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover={false}
+            theme="colored"
+          /> : null}
         </>
       </div>
     </div>
