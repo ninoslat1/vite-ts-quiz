@@ -9,3 +9,10 @@
         @apply bg-sky-600
     }
 }
+
+@layer footer {
+    footer {
+        /* @apply footer footer-center text-base-content text-center sticky top-[100vh] */
+        @apply fixed bottom-0 text-center w-screen h-24 text-white
+    }
+}

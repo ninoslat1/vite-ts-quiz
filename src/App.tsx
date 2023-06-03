@@ -3,9 +3,24 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Trivia from './components/Trivia'
 import { fetchTriviaQuestions, Difficulty, QuestionState } from './API';
+import { reloadPage } from './util';
 
-const TOTAL_QUESTION = 10
-const min_score = 7
+
+const questNum:any = window.prompt("Input the number of total question")
+
+const TOTAL_QUESTION = parseInt(questNum)
+
+const containsNumbers = (str:any) => {
+  return /^\d+$/.test(str);
+}
+
+if(questNum == null || questNum == '' || containsNumbers(questNum) === false){
+  window.alert('Input number only')
+  reloadPage();
+}
+
+
+const min_score = Math.floor((TOTAL_QUESTION/2)+(TOTAL_QUESTION/4))
 
 export type AnswerObj = {
   question: string;
@@ -36,10 +51,6 @@ const App = () => {
     setUserAnswer([])
     setNumber(0)
     setLoading(false)
-  }
-
-  const reloadPage = ():void => {
-    window.location.reload()
   }
 
   const checkTrivia = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -96,7 +107,7 @@ const App = () => {
   }
 
   return (
-    <div className='w-[75vw] md:w-[50vw] mx-auto px-5 h-[75vh] md:h-[55vh] text-center bg-white rounded-md shadow-lg overflow-hidden'>
+    <div className='w-[75vw] md:w-[55vw] lg:w-[50vw] mx-auto px-5 h-[75vh] md:h-[65vh] text-center bg-white rounded-md shadow-lg overflow-hidden'>
       <h1 className="text-blue-800 bg-white font-qs text-3xl py-5 text-center font-bold">Trivia Quiz</h1>
       <>
         {gameOver && userAnswer.length === 0 ? (
@@ -125,7 +136,9 @@ const App = () => {
           )
         }
         {!gameOver && !loading && userAnswer.length === number + 1 && number !== TOTAL_QUESTION || number === TOTAL_QUESTION ? (
-          <p>The answer is {question[number].correct_answer}</p>
+          <p>The answer is {question[number].correct_answer
+            .replace('&#039;','`')
+            .replace('&iacute;','i')}</p>
         ): null}
 
         {!gameOver && !loading && userAnswer.length === number + 1 && number !== TOTAL_QUESTION - 1 ? (
@@ -134,7 +147,7 @@ const App = () => {
           </>
         ) : null }
         <>
-          {userAnswer.length === TOTAL_QUESTION && score <= min_score ? <ToastContainer
+          {<ToastContainer
             position="bottom-center"
             autoClose={1500}
             hideProgressBar={false}
@@ -145,8 +158,7 @@ const App = () => {
             draggable
             pauseOnHover={false}
             theme="colored"
-          /> : 
-          null}
+          />}
         </>
       </div>
     </div>
